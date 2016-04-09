@@ -1,0 +1,30 @@
+fluentd:
+  build: ./fluentd
+  links:
+   - "elasticsearch"
+  volumes:
+   - /var/lib/docker/containers:/var/lib/docker/containers
+   - /var/run:/var/run
+   - /var/log/docker:/var/log/docker
+
+elasticsearch:
+  build: elasticsearch
+  expose:
+    - 9200
+
+kibana:
+  image: kibana
+  links:
+   - "elasticsearch"
+  expose:
+   - 5601
+
+norikura:
+  image: kazunori279/fluentd-norikra-server
+  links:
+   - "fluentd"
+  expose:
+   - 26578
+   - 26571
+   - 24224
+   - 24224/udp
